@@ -1,7 +1,7 @@
-"""facebrooklyn URL Configuration
+"""connectedin URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
+    https://docs.djangoproject.com/en/2.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -15,7 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from perfis import views 
+from usuarios.views import *
+from django.contrib.auth import views as v
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index,name='index'),
+    path('perfil/<int:perfil_id>', views.exibir_perfil, name='exibir'),
+    path('perfil/<int:perfil_id>/convidar',views.convidar, name='convidar'),
+    path('convite/<int:convite_id>/aceitar',views.aceitar, name='aceitar'),
+    path('registrar/', RegistrarUsuarioView.as_view(), name="registrar"),
+    path('login/',v.LoginView.as_view(template_name='login.html'),name = 'login'),
+    path('logout/',v.LogoutView.as_view(template_name='login.html'),name='logout'),
 ]
+
+
