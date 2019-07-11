@@ -3,7 +3,7 @@
 <html lang = "pt-br">
 	<head>
 		<meta charset="utf-8">
-		<title>ConnectedIn</title>
+		<title>FaceBrooklyn</title>
 		<link rel="stylesheet" 
 			 href="{% static 'styles/bootstrap.css' %}">
 		<link rel="stylesheet" 
@@ -12,13 +12,15 @@
 	</head>
 	<body>
 		<div class="container">
+			<div style="background-color: skyblue">
 			<div class = "header">
 				<ul class = "nav nav-pills pull-right">
 					<li><a href = "{% url 'index' %}">{{ perfil_logado.nome }}</a></li>
 					<li><a href = "/logout/">Logout</a></li>
 				</ul>
-				<h3 class = "text-muted">ConnectedIn</h3>
+				<h3 class = "text-muted">FaceBrooklyn</h3>
 			</div>
+		</div>
 			
 			<div class="row content">
 				{% block body%}
