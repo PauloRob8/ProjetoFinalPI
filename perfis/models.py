@@ -7,7 +7,7 @@ class Perfil(models.Model):
     nome = models.CharField(max_length=255, null=False)
     telefone = models.CharField(max_length=20, null= False)
     nome_empresa = models.CharField(max_length=255, null=False)
-    contatos = models.ManyToManyField('Perfil')
+    contatos = models.ManyToManyField('Perfil',related_name="amigos")
     usuario = models.OneToOneField(User, related_name="perfil",on_delete = models.CASCADE)
 
     @property
@@ -31,8 +31,8 @@ class Perfil(models.Model):
         logado = Perfil.objects.get(id = perfil_logado.id)
         convidado = Perfil.objects.get(id = perfil_convidado.id)
         
-        logado.contatos.remove(logado.id)
-        convidado.contatos.remove(convidado.id)
+        logado.amigos.remove(convidado)
+        convidado.amigos.remove(logado)
 
 class Convite(models.Model):
     solicitante = models.ForeignKey(Perfil,on_delete=models.CASCADE,related_name='convites_feitos' )

@@ -23,8 +23,10 @@ from django.contrib.auth import views as v
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index,name='index'),
-    path('listarperfis', views.listar_perfis, name='listaperfis'),
+    path('listarperfis/', views.listar_perfis, name='listaperfis'),
     path('perfil/<int:perfil_id>', views.exibir_perfil, name='exibir'),
+    path('perfil/<int:perfil_id>/mudar-senha', views.mudar_senha, name='mudar-senha'),
+    path('perfil/<int:perfil_id>/mudar-senha/confirma', MudarSenhaView.as_view(), name='confirma-mudanca'),
     path('perfil/<int:perfil_id>/convidar',views.convidar, name='convidar'),
     path('perfil/<int:perfil_id>/desfazer',views.desfazer, name='desfazer'),
     path('convite/<int:convite_id>/aceitar',views.aceitar, name='aceitar'),
