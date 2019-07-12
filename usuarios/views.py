@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.views.generic.base import View
 from perfis.models import Perfil
-from usuarios.forms import RegistrarUsuarioForm
+from usuarios.forms import *
 
 # Create your views here.
 
@@ -24,3 +24,11 @@ class RegistrarUsuarioView(View):
             perfil.save()
             return redirect('index')
         return render(request, self.template_name, {'form' : form})
+
+class MudarSenhaView(View):
+
+    def get(self, request):
+        return redirect('index')
+
+    def post(self, request, perfil_id):
+        return redirect('index')

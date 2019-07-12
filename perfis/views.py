@@ -19,22 +19,28 @@ def exibir_perfil(request, perfil_id):
 	exist = Convite.exist(perfil , perfil_logado)
 
 
-	if is_amigos:
-		return render(request, 'perfil.html',
-			{'perfil' : perfil, 
-			'perfil_logado' : get_perfil_logado(request),
-			'is_amigos' : True, 'is_convidado' : False})
-	else:
-		if exist:
+	if perfil.id != perfil_logado.id:
+		if is_amigos:
 			return render(request, 'perfil.html',
-		        {'perfil' : perfil, 
+				{'perfil' : perfil, 
 				'perfil_logado' : get_perfil_logado(request),
-				'is_amigos' : False, 'is_convidado' : True})
+				'is_amigos' : True, 'is_convidado' : False, 'is_me' : False})
 		else:
-			return render(request, 'perfil.html',
-		        {'perfil' : perfil, 
-				'perfil_logado' : get_perfil_logado(request),
-				'is_amigos' : False, 'is_convidado' : False})
+			if exist:
+				return render(request, 'perfil.html',
+					{'perfil' : perfil, 
+					'perfil_logado' : get_perfil_logado(request),
+					'is_amigos' : False, 'is_convidado' : True, 'is_me' : False})
+			else:
+				return render(request, 'perfil.html',
+					{'perfil' : perfil, 
+					'perfil_logado' : get_perfil_logado(request),
+					'is_amigos' : False, 'is_convidado' : False, 'is_me' : False})
+	else:
+		return render(request, 'perfil.html',
+				{'perfil' : perfil, 
+				'perfil_logado' : get_perfil_logado(request),'is_me' : True})
+
 
 @login_required
 def convidar(request,perfil_id):
@@ -75,3 +81,7 @@ def recusar(request, convite_id):
 def listar_perfis(request):
 	return render(request, 'lista_de_perfis.html', {'perfis' : Perfil.objects.all(), 
 		'perfil_logado' : get_perfil_logado(request)})
+
+@login_required
+def mudar_senha(request,perfil_id):
+	return render(request, 'mudar-senha.html', {'perfil_id' : perfil_id})

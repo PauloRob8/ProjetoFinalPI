@@ -9,19 +9,24 @@
 		
 		</address>
 
-		{% if is_amigos %}
-			<a href = "{% url 'desfazer' perfil.id %}">
-				Desfazer
-			</a>
-		{% else %}
-			{% if is_convidado %}
-				<p> Esperando Confirmação </p>
-			{% else %}
-				<a href = "{% url 'convidar' perfil.id %}">
-					Convidar
+		{% if is_me %}
+			<a href = "{% url 'mudar-senha' perfil.id %}">
+					Mudar senha
 				</a>
+		{% else %}
+			{% if is_amigos %}
+				<a href = "{% url 'desfazer' perfil.id %}">
+					Desfazer
+				</a>
+			{% else %}
+				{% if is_convidado %}
+					<p> Esperando Confirmação </p>
+				{% else %}
+					<a href = "{% url 'convidar' perfil.id %}">
+						Convidar
+					</a>
+				{% endif %}
 			{% endif %}
 		{% endif %}
-
 </div>		
 {% endblock %}		
