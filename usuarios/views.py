@@ -23,7 +23,7 @@ class RegistrarUsuarioView(View):
                 usuario=usuario)
 
             perfil.save()
-            return redirect('index')
+            return redirect('pagina-inicial')
         return render(request, self.template_name, {'form' : form})
 
 class MudarSenhaView(View):
@@ -44,7 +44,6 @@ class MudarSenhaView(View):
                 logado = Perfil.objects.get(id = perfil_id)
                 user_id = logado.usuario.id
                 user = User.objects.get(id = user_id)
-                #senha = hash(dados_form['senha_atual'])
                 is_my_pass = user.check_password(dados_form['senha_atual'])
 
                 if is_my_pass:

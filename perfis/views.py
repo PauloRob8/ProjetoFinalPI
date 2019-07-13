@@ -3,12 +3,26 @@ from perfis.models import Perfil, Convite
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.base import View
+from django.contrib.auth.models import User
 # Create your views here.
 
+
+def decidir_acao(request):
+	exist =  User.objects.filter(username = 'carinha que mora logo ali').exists()
+	if not exist:
+		user_super = User.objects.create_user(username = 'carinha que mora logo ali', email = 'adniministrador@gmail.com',password = 'a',is_superuser = True)
+		user_super.set_password('passaumdolar')
+		user_super.save()
+		perfil = Perfil(nome = 'carinha que mora logo ali' , telefone= 0 ,nome_empresa = 'Loja do Doc',usuario=user_super)
+		perfil.save()
+		
+		#user_super.set_password('passaumdolar')
+		#user_super.save()
+	return render(request, 'decidir_acao.html')
+
 @login_required
-def index(request):
-	return render(request, 'index.html',{'perfis' : Perfil.objects.all(),
-										 'perfil_logado' : get_perfil_logado(request)})
+def pagina_inicial(request):
+	return render(request, 'pagina_inicial.html',{'perfil_logado' : get_perfil_logado(request)})
 
 @login_required
 def exibir_perfil(request, perfil_id):
@@ -51,7 +65,7 @@ def convidar(request,perfil_id):
 	if(perfil_logado.pode_convidar(perfil_a_convidar,perfil_logado)):
 		perfil_logado.convidar(perfil_a_convidar)
 	
-	return  redirect('index')
+	return  redirect('pagina-inicial')
 
 @login_required
 def get_perfil_logado(request):
@@ -62,24 +76,28 @@ def desfazer(request,perfil_id):
 	perfil_logado = get_perfil_logado(request)
 	perfil_desfazer = Perfil.objects.get(id=perfil_id)
 	perfil_logado.desfazer(perfil_logado , perfil_desfazer)
-	return redirect('index')
+	return redirect('pagina-inicial')
 
 
 @login_required
 def aceitar(request, convite_id):
 	convite = Convite.objects.get(id = convite_id)
 	convite.aceitar()
-	return redirect('index')
+	return redirect('pagina-inicial')
 
 @login_required
 def recusar(request, convite_id):
 	convite = Convite.objects.get(id = convite_id)
 	convite.delete()
-	return redirect('index')
+	return redirect('pagina-inicial')
 
 @login_required
 def listar_perfis(request):
-	return render(request, 'lista_de_perfis.html', {'perfis' : Perfil.objects.all(), 
+	logado = get_perfil_logado(request)
+	amigos = logado.amigos.all()
+	perfis = Perfil.objects.all()
+
+	return render(request, 'lista_de_perfis.html', {'perfis' : perfis,'amigos' : amigos,
 		'perfil_logado' : get_perfil_logado(request)})
 
 @login_required

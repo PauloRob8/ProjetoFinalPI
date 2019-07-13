@@ -2,6 +2,16 @@
 <!doctype html>
 <html lang = "pt-br">
 	<head>
+		<style> 
+			.div1 {
+				position: absolute;
+				top: 120px;
+				right: 0;
+				width: 300px;
+				height: 100px;
+				border: 1px solid blue;
+			}
+		</style>
 		<meta charset="utf-8">
 		<title>FaceBrooklyn</title>
 		<link rel="stylesheet" 
@@ -15,7 +25,7 @@
 			<div style="background-color: skyblue">
 			<div class = "header">
 				<ul class = "nav nav-pills pull-right">
-					<li><a href = "{% url 'index' %}">Página Inicial</a></li>
+					<li><a href = "{% url 'pagina-inicial' %}">Página Inicial</a></li>
 					<li><a href = "{% url 'exibir' perfil_logado.id%}">Meu Perfil</a></li>
 					<li><a href = "/logout/">Logout</a></li>
 				</ul>
