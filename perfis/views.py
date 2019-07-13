@@ -83,5 +83,6 @@ def listar_perfis(request):
 		'perfil_logado' : get_perfil_logado(request)})
 
 @login_required
-def mudar_senha(request,perfil_id):
-	return render(request, 'mudar-senha.html', {'perfil_id' : perfil_id})
+def mudar_senha(request, perfil_id):
+	perfil = get_perfil_logado(request)
+	return render(request, 'mudar-senha.html', {'perfil_logado' : perfil, 'perfil_id' : perfil_id})

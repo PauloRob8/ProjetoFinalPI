@@ -34,18 +34,9 @@ class MudarSenhaForm(forms.Form):
 
     def is_valid(self):
         valid = True
-        if not super(MudarSenhaForm, self).is_valid():
-            self.adiciona_erro('Por favor, verifique os dados informados')
-            valid = False
-        
-        if self.senha_nova == self.senha_confirmacao:
-            valid = True
-        else:
-            self.adiciona_erro('A confirmaçao da senha é inválida')
-            valid = False
 
         return valid
 
-        def adiciona_erro(self, message):
-            errors =self._errors.setdefault(forms.forms.NON_FIELD_ERRORS,forms.utils.ErrorList())
-            errors.append(message)
+    def adiciona_erro(self, message):
+        errors =self._errors.setdefault(forms.forms.NON_FIELD_ERRORS,forms.utils.ErrorList())
+        errors.append(message)
