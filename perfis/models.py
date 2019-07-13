@@ -8,6 +8,7 @@ class Perfil(models.Model):
     telefone = models.CharField(max_length=20, null= False)
     nome_empresa = models.CharField(max_length=255, null=False)
     contatos = models.ManyToManyField('Perfil',related_name="amigos")
+    bloqueados = models.ManyToManyField('Perfil')
     usuario = models.OneToOneField(User, related_name="perfil",on_delete = models.CASCADE)
 
     @property
@@ -22,10 +23,14 @@ class Perfil(models.Model):
         convite.save()
 
     def pode_convidar(self, perfil_convidado, perfil_logado):
-        if perfil_convidado.id == perfil_logado.id:
-            return False
+        is_bloqueado = perfil_convidado.bloqueados.filter(id = perfil_logado.id).exists()
+        if not is_bloqueado:
+            if perfil_convidado.id == perfil_logado.id:
+                return False
+            else:
+                return True
         else:
-            return True
+            return False
     
     def desfazer(self,perfil_logado , perfil_convidado):
         logado = Perfil.objects.get(id = perfil_logado.id)
@@ -33,6 +38,20 @@ class Perfil(models.Model):
         
         logado.amigos.remove(convidado)
         convidado.amigos.remove(logado)
+
+    def bloquear(self,perfil_logado , perfil_selecionado):
+        exist_convite = Convite.exist(perfil_logado , perfil_selecionado)
+        is_amigos = perfil_logado.contatos.filter(id = perfil_selecionado.id).exists()
+        
+        if exist_convite:
+            Convite.objects.get(solicitante= perfil_logado,convidado = perfil_selecionado).delete()
+            Convite.objects.get(solicitante= perfil_selecionado,convidado = perfil_logado).delete()
+        
+        if is_amigos:
+            perfil_logado.contatos.get(id= perfil_selecionado.id).delete()
+            perfil_selecionado.contatos.get(id = perfil_logado.id).delete()
+        
+        perfil_logado.bloqueados.set(perfil_selecionado)
 
 class Convite(models.Model):
     solicitante = models.ForeignKey(Perfil,on_delete=models.CASCADE,related_name='convites_feitos' )
@@ -47,10 +66,8 @@ class Convite(models.Model):
     def exist(perfil_convidado, perfil_logado ):
         logado = Convite.objects.filter(solicitante = perfil_logado).exists()
         convidado = Convite.objects.filter(convidado = perfil_convidado).exists()
-        logado_reverse = Convite.objects.filter(solicitante = perfil_convidado).exists()
-        convidado_reverse = Convite.objects.filter(convidado = perfil_logado).exists()
-        if convidado or convidado_reverse:
-            if logado or logado_reverse:
+        if convidado:
+            if logado:
                 return True
     
 

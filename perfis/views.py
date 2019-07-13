@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.base import View
 from django.contrib.auth.models import User
+
 # Create your views here.
 
 
@@ -31,29 +32,26 @@ def exibir_perfil(request, perfil_id):
 	perfil_logado = get_perfil_logado(request)
 	is_amigos = perfil_logado.contatos.filter(id = perfil.id).exists()
 	exist = Convite.exist(perfil , perfil_logado)
-
+	bloqueado = perfil.bloqueados.filter(id = perfil_logado.id).exists()
+	user = perfil_logado.usuario
+	is_super = user.is_superuser
 
 	if perfil.id != perfil_logado.id:
-		if is_amigos:
-			return render(request, 'perfil.html',
-				{'perfil' : perfil, 
-				'perfil_logado' : get_perfil_logado(request),
-				'is_amigos' : True, 'is_convidado' : False, 'is_me' : False})
+		if is_super:
+			return render(request, 'perfil_issuper.html',
+					{'perfil' : perfil, 
+					'perfil_logado' : get_perfil_logado(request),
+					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False})
 		else:
-			if exist:
-				return render(request, 'perfil.html',
+			return render(request, 'perfil_notsuper.html',
 					{'perfil' : perfil, 
 					'perfil_logado' : get_perfil_logado(request),
-					'is_amigos' : False, 'is_convidado' : True, 'is_me' : False})
-			else:
-				return render(request, 'perfil.html',
-					{'perfil' : perfil, 
-					'perfil_logado' : get_perfil_logado(request),
-					'is_amigos' : False, 'is_convidado' : False, 'is_me' : False})
+					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False})
 	else:
-		return render(request, 'perfil.html',
+		return render(request, 'perfil_notsuper.html',
 				{'perfil' : perfil, 
 				'perfil_logado' : get_perfil_logado(request),'is_me' : True})
+
 
 
 @login_required
@@ -61,15 +59,13 @@ def convidar(request,perfil_id):
 	perfil_logado = get_perfil_logado(request)
 	perfil_a_convidar = Perfil.objects.get(id=perfil_id)
 	perfil_logado = get_perfil_logado(request)
+	perfil_bloqueado = perfil_a_convidar.bloqueados.filter(id = perfil_logado.id).exists()
 	
-	if(perfil_logado.pode_convidar(perfil_a_convidar,perfil_logado)):
-		perfil_logado.convidar(perfil_a_convidar)
+	if not perfil_bloqueado:
+		if perfil_logado.pode_convidar(perfil_a_convidar,perfil_logado):
+			perfil_logado.convidar(perfil_a_convidar)
 	
 	return  redirect('pagina-inicial')
-
-@login_required
-def get_perfil_logado(request):
-	return request.user.perfil
 
 @login_required
 def desfazer(request,perfil_id):
@@ -78,6 +74,15 @@ def desfazer(request,perfil_id):
 	perfil_logado.desfazer(perfil_logado , perfil_desfazer)
 	return redirect('pagina-inicial')
 
+@login_required
+def bloquear(request,perfil_id):
+	perfil_logado = get_perfil_logado(request)
+	perfil_desfazer = Perfil.objects.get(id=perfil_id)
+	perfil_logado.bloquear(perfil_logado,perfil_id)
+
+@login_required
+def get_perfil_logado(request):
+	return request.user.perfil
 
 @login_required
 def aceitar(request, convite_id):

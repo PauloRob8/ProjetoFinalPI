@@ -26,7 +26,7 @@
 			<div class = "header">
 				<ul class = "nav nav-pills pull-right">
 					<li><a href = "{% url 'pagina-inicial' %}">Página Inicial</a></li>
-					<li><a href = "{% url 'exibir' perfil_logado.id%}">Meu Perfil</a></li>
+					<li><a href = "{% url 'exibir' perfil_logado.id%}">Meu Perfil {{perfil_logado.nome}}</a></li>
 					<li><a href = "/logout/">Logout</a></li>
 				</ul>
 				<h3 class = "text-muted">FaceBrooklyn</h3>

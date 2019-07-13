@@ -8,10 +8,11 @@
             <ul class="list-group">
                     {% for amigo in perfil_logado.amigos.all %}
                         <li class = "list-group-item">
-                           <ul class = "list-inline">
+                            <ul class = "list-inline">
                                 <li class = "list-inline-item">
                                     <a href = "{% url 'exibir' amigo.id %}">{{amigo.nome}}</a>
                                 </li>
+                            </ul>
                         </li>
                     {% endfor %}
             </ul>
