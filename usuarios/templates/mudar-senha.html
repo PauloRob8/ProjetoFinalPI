@@ -4,11 +4,11 @@
     <form class="form-signin" role="form"action="#" method="post">
         {% csrf_token %}
         <h2 class="form-signin-heading">Mudar senha</h2>
-        <input type="password" id="id_senha_atual" name="senha"
+        <input type="password" id="id_senha_atual" name="senha_atual"
         class="form-control" placeholder="Digite a Senha atual" required>
-        <input type="password" id="id_senha_nova" name="senha"
+        <input type="password" id="id_senha_nova" name="senha_nova"
         class="form-control" placeholder="Digite a nova senha" required>
-        <input type="password" id="id_senha_confir" name="senha"
+        <input type="password" id="id_senha_confir" name="senha_confirmacao"
         class="form-control" placeholder="Digite a novamente a senha" required>
         <button class="btn btn-lg btn-primary btn-block"
         type="submit" value="Login">Mudar Senha</button>
