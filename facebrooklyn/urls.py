@@ -22,7 +22,8 @@ from django.contrib.auth import views as v
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index,name='index'),
+    path('', views.decidir_acao,name='decidir'),
+    path('pagina-inicial/', views.pagina_inicial,name='pagina-inicial'),
     path('listarperfis/', views.listar_perfis, name='listaperfis'),
     path('perfil/<int:perfil_id>', views.exibir_perfil, name='exibir'),
     path('perfil/<int:perfil_id>/mudar-senha', views.mudar_senha, name='mudar-senha'),
@@ -33,7 +34,7 @@ urlpatterns = [
     path('convite/<int:convite_id>/recusar',views.recusar, name='recusar'),
     path('registrar/', RegistrarUsuarioView.as_view(), name="registrar"),
     path('login/',v.LoginView.as_view(template_name='login.html'),name = 'login'),
-    path('logout/',v.LogoutView.as_view(template_name='login.html'),name='logout'),
+    path('logout/',v.LogoutView.as_view(template_name='decidir_acao.html'),name='logout'),
 ]
 
 
