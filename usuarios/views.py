@@ -26,9 +26,15 @@ class RegistrarUsuarioView(View):
         return render(request, self.template_name, {'form' : form})
 
 class MudarSenhaView(View):
+    template_name = 'mudar-senha.html'
 
-    def get(self, request):
+    def get(self, request, perfil_id):
         return redirect('index')
 
     def post(self, request, perfil_id):
-        return redirect('index')
+        logado = Perfil.objects.get(id = perfil_id)
+        form = MudarSenhaForm(request.POST)
+
+        
+        
+        return render(request, self.template_name, {'perfil_logado' : logado, 'perfil_id' : perfil_id})

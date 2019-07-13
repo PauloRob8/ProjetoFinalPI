@@ -1,6 +1,6 @@
-{% extends "base_usuario.html" %}
+{% extends "base.html" %}
 {% block body %}
-<form class="form-signin" action="{% url 'confirma-mudanca' perfil_id %}" method="post">
+<form class="form-signin" action="{% url 'confirma-mudanca' perfil_logado.id %}" method="post">
     <form class="form-signin" role="form"action="#" method="post">
         {% csrf_token %}
         <h2 class="form-signin-heading">Mudar senha</h2>
