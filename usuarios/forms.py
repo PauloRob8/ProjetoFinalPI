@@ -34,7 +34,9 @@ class MudarSenhaForm(forms.Form):
 
     def is_valid(self):
         valid = True
-
+        if not super(MudarSenhaForm, self).is_valid():
+            valid = False
+    
         return valid
 
     def adiciona_erro(self, message):
