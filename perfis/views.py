@@ -21,7 +21,7 @@ def decidir_acao(request):
 @login_required
 def pagina_inicial(request):
 	logado = get_perfil_logado(request)
-	convites = Convite.objects.all()
+	convites = Convite.objects.filter(solicitante = logado.id)
 	return render(request, 'pagina_inicial.html',{'perfil_logado' : logado, 'convites_espera' : convites})
 
 @login_required
@@ -122,3 +122,13 @@ def listar_perfis(request):
 def mudar_senha(request, perfil_id):
 	perfil = get_perfil_logado(request)
 	return render(request, 'mudar-senha.html', {'perfil_logado' : perfil, 'perfil_id' : perfil_id})
+
+
+@login_required
+class PesquisarUsuarioView(View):
+    
+    def get(self, request, perfil_id):
+        return redirect('pagina-inicial')
+
+    def post(self, request, perfil_id):
+        return redirect('pagina-inicial')

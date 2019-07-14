@@ -2,41 +2,126 @@
 <!doctype html>
 <html lang = "pt-br">
 	<head>
-		<style> 
-			.div1 {
-				position: absolute;
-				top: 120px;
-				right: 0;
-				width: 300px;
-				height: 100px;
-				border: 1px solid blue;
+		<style>
+			* {
+  				box-sizing: border-box;
+  				font-family: "American Typewriter", sans-serif;
 			}
-		</style>
-		<meta charset="utf-8">
-		<title>FaceBrooklyn</title>
-		<link rel="stylesheet" 
-			 href="{% static 'styles/bootstrap.css' %}">
-		<link rel="stylesheet" 
-			 href="{% static 'styles/main.css' %}">
 
+			body {
+				background-color: #aaa;
+				font-family: Arial, Helvetica, sans-serif;
+				margin: 0;
+			}
+
+			.topnav {
+				overflow: hidden;
+				background-color: #000000;
+				}
+
+			.topnav a {
+				float: left;
+				display: block;
+				color:#ababab;
+				text-align: center;
+				padding: 14px 16px;
+				text-decoration: none;
+			}
+
+			.header {
+				background-color: #f1f1f1;
+				padding: 30px;
+				text-align: center;
+				font-size: 35px;
+			}
+
+			.content {
+				background-color:  #000000;
+				padding: 10px;
+				height: 100px; 
+			}
+
+			input[type=text] {
+				box-sizing: border-box;
+				border: none;
+				border-bottom: 2px solid white;
+				width: 10%;
+				padding: 7px 10px;
+				margin: 8px 0;
+				background-color:  #000000;
+				-webkit-transition: width 0.4s ease-in-out;
+  				transition: width 0.4s ease-in-out;
+			}
+
+			input[type=text]:focus {
+				outline: 0;
+				width: 30%;
+				background-color: #000000;
+			}
+
+			.column {
+				float: left;
+				padding: 10px;
+			}
+
+			.column.side {
+				height: 100%;
+				width: 25%;
+			}
+
+			.column.middle {
+				height: 100vh;
+				width: 50%;
+			}
+
+			.row:after {
+				content: "";
+				display: table;
+				clear: both;
+			}
+
+			.columnF {
+				float: left;
+				padding: 10px;
+				height: 100%;
+			}
+
+			.columnF.side {
+				width: 25%;
+			}
+
+			.columnF.middle {
+				width: 50%;
+			}
+
+			.columnC {
+				float: top;
+				padding: 10px;
+				height: 100%;
+			}
+
+			.columnC.side {
+				width: 100%;
+			}
+
+		</style>
+
+			
 	</head>
 	<body>
-		<div class="container">
-			<div style="background-color: skyblue">
-			<div class = "header">
-				<ul class = "nav nav-pills pull-right">
-					<li><a href = "{% url 'pagina-inicial' %}">Página Inicial</a></li>
-					<li><a href = "{% url 'exibir' perfil_logado.id%}">Meu Perfil {{perfil_logado.nome}}</a></li>
-					<li><a href = "/logout/">Logout</a></li>
-				</ul>
-				<h3 class = "text-muted">FaceBrooklyn</h3>
-			</div>
+		<div class="content">
+			<h1 style="color: #ababab">FaceBrooklyn</h1>
 		</div>
-			
-			<div class="row content">
-				{% block body%}
-				{% endblock %}				
-			</div>		
-		</div>	
+		<div class="topnav">
+			<a href="{% url 'listaperfis' %}">Listar Perfis</a>
+			<a href="{% url 'pagina-inicial' %}">Pagina Inicial</a>
+			<a href="{% url 'exibir' perfil_logado.id%}">Meu Perfil</a>
+			<a href = "/logout/">Logout</a></li>
+			<form class="form-signin" style ="color: #fcfcfc;" action="" method="post">
+				<input id="id_nome" name="nome"type="text" placeholder="Nome Perfil" required >
+			</form>	
+		</div>
+		{% block body%}
+		{% endblock %}	
 	</body>
 </html>
