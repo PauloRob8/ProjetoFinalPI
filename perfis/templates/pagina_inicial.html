@@ -1,33 +1,47 @@
 {% extends 'base.html' %}
 {% block body %}
 <a href = "{% url 'listaperfis' %}"> listar perfis </a>
-<div class = "div1">
-<h6>Meus amigos</h6>
-    {% with total_amigos=perfil_logado.amigos.count %}
-        {% if total_amigos %}
-            <ul class="list-group">
-                    {% for amigo in perfil_logado.amigos.all %}
-                        <li class = "list-group-item">
-                            <ul class = "list-inline">
-                                <li class = "list-inline-item">
-                                    <a href = "{% url 'exibir' amigo.id %}">{{amigo.nome}}</a>
-                                </li>
+<div class = "container-fluid">
+    <div class="row">
+        <aside  class="col-xs-12 col-md-3">
+            <div class="profile-box full-width">
+                    <div class="profile-title">
+                        <h3>Amigos</h3>
+                    </div>
+                    <div class="profiles-list" style="overflow-y:scroll;">
+                        {% with total_amigos=perfil_logado.amigos.count %}
+                        {% if total_amigos %}
+                            <ul class="list-group">
+                                    {% for amigo in perfil_logado.amigos.all %}
+                                        <li class = "list-group-item">
+                                            <ul class = "list-inline">
+                                                <li class = "list-inline-item">
+                                                    <a href = "{% url 'exibir' amigo.id %}">{{amigo.nome}}</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endfor %}
                             </ul>
-                        </li>
-                    {% endfor %}
-            </ul>
-        {% else %}
-            <li class = "list-group-item">
-                <ul class = "list-inline">
-                    <li class = "list-inline-item">
-                        <p>Não possui amigos</a>
-                    </li>
-            </li>
-        {% endif %}
-    {% endwith %} 
+                        {% else %}
+                            <div class="profile-body">
+                                <div class="name-box">
+                                    <h4> Nenhum amigo encontrado :(</h4>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endwith %} 
+        </aside>
+    </div>
 </div> 
+<div class="col-xs-12 col-md-6">
+        
+    </div>
+<aside class="col-xs-12 col-md-3">
 
-<div class="col-lg-12"> 		    
+<div class="profile-box full-width">
+        <div class="profile-title">
+                <h3>Convites recebidos</h3>
+            </div> 		    
     <div class="panel panel-default">
         {% with total=perfil_logado.convites_recebidos.count %}
 
@@ -56,11 +70,14 @@
                     {% endfor %}
                 </ul>
             {% else %}
-                <div class="panel-body">
-                    Não há convites
-                </div>    
+            <div class="profile-body">
+                    <div class="name-box">
+                        <h4>Nenhum convite pendente</h4>
+                    </div>
+                </div>  
             {% endif %}
         {% endwith %}    
     </div>    
 </div>
+</aside>
 {% endblock %}
