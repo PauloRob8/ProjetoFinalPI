@@ -40,18 +40,25 @@ class Perfil(models.Model):
         convidado.amigos.remove(logado)
 
     def bloquear(self,perfil_logado , perfil_selecionado):
-        exist_convite = Convite.exist(perfil_logado , perfil_selecionado)
+        exist_convite1 = Convite.objects.filter(solicitante = perfil_logado.id, convidado = perfil_selecionado.id).exists()
+        exist_convite2 = Convite.objects.filter(solicitante = perfil_selecionado.id, convidado = perfil_logado.id).exists()
         is_amigos = perfil_logado.contatos.filter(id = perfil_selecionado.id).exists()
         
-        if exist_convite:
-            Convite.objects.get(solicitante= perfil_logado,convidado = perfil_selecionado).delete()
-            Convite.objects.get(solicitante= perfil_selecionado,convidado = perfil_logado).delete()
+        if exist_convite1:
+            Convite.objects.get(solicitante= perfil_logado.id,convidado = perfil_selecionado.id).delete()
+        if exist_convite2:
+            Convite.objects.get(solicitante= perfil_selecionado.id,convidado = perfil_logado.id).delete()
         
         if is_amigos:
-            perfil_logado.contatos.get(id= perfil_selecionado.id).delete()
-            perfil_selecionado.contatos.get(id = perfil_logado.id).delete()
+            perfil_logado.contatos.remove(perfil_selecionado)
+            perfil_selecionado.contatos.remove(perfil_logado)
         
-        perfil_logado.bloqueados.set(perfil_selecionado)
+        bloqueado = [perfil_selecionado]
+        perfil_logado.bloqueados.set(bloqueado)
+    
+    def desbloquear(self,perfil_logado , perfil_desbloqueado):
+        desbloquear = perfil_logado.bloqueados.get(id = perfil_desbloqueado.id)
+        perfil_logado.bloqueados.remove(desbloquear)
 
 class Convite(models.Model):
     solicitante = models.ForeignKey(Perfil,on_delete=models.CASCADE,related_name='convites_feitos' )
@@ -64,10 +71,12 @@ class Convite(models.Model):
 
 
     def exist(perfil_convidado, perfil_logado ):
-        logado = Convite.objects.filter(solicitante = perfil_logado).exists()
-        convidado = Convite.objects.filter(convidado = perfil_convidado).exists()
-        if convidado:
-            if logado:
+        logado = Convite.objects.filter(solicitante = perfil_logado.id).exists()
+        convidado = Convite.objects.filter(convidado = perfil_convidado.id).exists()
+        logado_reverse = Convite.objects.filter(solicitante = perfil_convidado.id).exists()
+        convidado_reverse = Convite.objects.filter(convidado = perfil_logado.id).exists()
+        if convidado or convidado_reverse:
+            if logado or logado_reverse:
                 return True
     
 

@@ -16,14 +16,13 @@ def decidir_acao(request):
 		user_super.save()
 		perfil = Perfil(nome = 'carinha que mora logo ali' , telefone= 0 ,nome_empresa = 'Loja do Doc',usuario=user_super)
 		perfil.save()
-		
-		#user_super.set_password('passaumdolar')
-		#user_super.save()
 	return render(request, 'decidir_acao.html')
 
 @login_required
 def pagina_inicial(request):
-	return render(request, 'pagina_inicial.html',{'perfil_logado' : get_perfil_logado(request)})
+	logado = get_perfil_logado(request)
+	convites = Convite.objects.all()
+	return render(request, 'pagina_inicial.html',{'perfil_logado' : logado, 'convites_espera' : convites})
 
 @login_required
 def exibir_perfil(request, perfil_id):
@@ -32,21 +31,27 @@ def exibir_perfil(request, perfil_id):
 	perfil_logado = get_perfil_logado(request)
 	is_amigos = perfil_logado.contatos.filter(id = perfil.id).exists()
 	exist = Convite.exist(perfil , perfil_logado)
-	bloqueado = perfil.bloqueados.filter(id = perfil_logado.id).exists()
+	
+	bloqueado1 = perfil.bloqueados.filter(id = perfil_logado.id).exists()
+	bloqueado2 = perfil_logado.bloqueados.filter(id = perfil.id).exists()
 	user = perfil_logado.usuario
 	is_super = user.is_superuser
+
+	bloqueado = False
+	if bloqueado1 or bloqueado2:
+		bloqueado = True
 
 	if perfil.id != perfil_logado.id:
 		if is_super:
 			return render(request, 'perfil_issuper.html',
 					{'perfil' : perfil, 
 					'perfil_logado' : get_perfil_logado(request),
-					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False})
+					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False, 'is_block' : bloqueado})
 		else:
 			return render(request, 'perfil_notsuper.html',
 					{'perfil' : perfil, 
 					'perfil_logado' : get_perfil_logado(request),
-					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False})
+					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False, 'is_block' : bloqueado})
 	else:
 		return render(request, 'perfil_notsuper.html',
 				{'perfil' : perfil, 
@@ -77,8 +82,16 @@ def desfazer(request,perfil_id):
 @login_required
 def bloquear(request,perfil_id):
 	perfil_logado = get_perfil_logado(request)
-	perfil_desfazer = Perfil.objects.get(id=perfil_id)
-	perfil_logado.bloquear(perfil_logado,perfil_id)
+	perfil_bloquear = Perfil.objects.get(id=perfil_id)
+	perfil_logado.bloquear(perfil_logado,perfil_bloquear)
+	return redirect('pagina-inicial')
+
+@login_required
+def desbloquear(request,perfil_id):
+	perfil_logado = get_perfil_logado(request)
+	perfil_desbloquear = Perfil.objects.get(id=perfil_id)
+	perfil_logado.desbloquear(perfil_logado,perfil_desbloquear)
+	return redirect('pagina-inicial')
 
 @login_required
 def get_perfil_logado(request):
