@@ -34,7 +34,7 @@
 	}
 
 	.column.middle {
-		height: 100vh;
+		height: 100%;
 		width: 50%;
 	}
 
@@ -67,6 +67,22 @@
 	.columnC.side {
 		width: 100%;
 	}
+
+
+    .columnPO {
+		float: left;
+		padding: 10px;
+		height: 100%;
+	}
+
+	.columnPO.side {
+		width: 25%;
+	}
+
+	.columnPO.middle {
+		width: 100%;
+	}
+    
 
 </style>
 
@@ -116,14 +132,37 @@
         <div>
             <a href="{%url 'criar_post' %}" class="button">Nova Postagem</a>
         </div>
+        
         <div>
             {% if qauntidade != 0 %}
                 {% for post in postagens %}
-                    <ul class="list-group">
-                        <li>{{post.autor.nome}} </li>
-                        <li>{{post.conteudo}}</li>
-                        <li>amei :{{post.amei}} / odiei : {{post.odiei}} / triste : {{post.triste}} / legal : {{post.legal}}</li>
-                    </ul>
+                    <div class="columnPO middle">
+                        <ul class="list-group">
+                            <li>Autor : {{post.autor.nome}} </li>
+                            <li>Texto : {{post.conteudo}}</li>
+                            <div class="columnPO side" style="background-color:#aaa;">
+                                <a href = "#">amei :{{post.amei}}</a>
+                            </div>
+                            <div class="columnPO side" style="background-color:#aaa;">
+                                <a href = "#">odiei : {{post.odiei}}</a>
+                            </div>
+                            <div class="columnPO side" style="background-color:#aaa;">
+                                <a href = "#"> triste : {{post.triste}}</a>
+                            </div>
+                            <div class="columnPO side" style="background-color:#aaa;">
+                                <a href = "#"> triste : legal : {{post.legal}}</a>
+                            </div>
+
+                             {% if  post.autor.id == perfil_logado.id or is_super %}
+                                <div class="columnPO side" style="background-color:#aaa;">
+                                    <a href="#" class="button">Editar</a>
+                                </div>
+                                <div class="columnPO side" style="background-color:#aaa;">
+                                    <a href="#" class="button">Excluir</a>
+                                </div>
+                            {% endif %}
+                        </ul>
+                    </div>
                 {% endfor %}
             {% else %}
                 <p>Sem postagem</p><br>

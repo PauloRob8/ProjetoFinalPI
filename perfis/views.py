@@ -50,6 +50,8 @@ def pagina_inicial(request):
 	amigos = logado.contatos.all()
 	post_mostrar = []
 	postagens = Post.objects.all().order_by('data')
+	user = logado.usuario
+	is_super = user.is_superuser
 
 	for post in postagens:
 		if post.autor in amigos or post.autor == logado:
@@ -58,7 +60,7 @@ def pagina_inicial(request):
 	quantidade = len(post_mostrar)
 
 	return render(request, 'pagina_inicial.html',{'perfil_logado' : logado, 'convites_espera' : convites, 
-	'postagens' : post_mostrar, 'quantidade' : quantidade})
+	'postagens' : post_mostrar, 'quantidade' : quantidade, 'is_super': is_super})
 
 @login_required
 def exibir_perfil(request, perfil_id):
