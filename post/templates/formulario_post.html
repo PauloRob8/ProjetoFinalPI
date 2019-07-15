@@ -15,16 +15,38 @@
   		transition: width 0.4s ease-in-out;
 	}
 
+    .button {
+        display: inline-block;
+        padding: 15px 25px;
+        font-size: 15px;
+        width: 100%;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #000000;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 9px #999;
+    }
+        .button:hover {background-color: #242424}
+        .button:active {
+        background-color: #383838;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
 </style>
     <form class="form-signin" action="{% url 'postar'%}" method="post">
         {% csrf_token %}
         <h2 class="form-signin-heading">O que você está pensando...?</h2>
         
 		<input id="id_post" name="post"
-        class="form-control" placeholder="Bota pra fora" required autofocus>
+        class="form-control" placeholder="Bota pra fora" required autofocus maxlength="60">
 
-        <button class="btn btn-lg btn-primary btn-block"
-        type="submit" value="Login">Registrar</button>
+        <button class="button"
+        type="submit" value="Login">Postar</button>
 
         {% if form.errors %}
             <div class="alert alert-danger">

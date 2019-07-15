@@ -21,3 +21,5 @@ class FazerPostView(View):
             post = Post(conteudo = texto, autor = logado, amei = 0, odiei = 0, triste = 0, legal = 0)
             post.save()
         return pagina_inicial(request)
+
+
