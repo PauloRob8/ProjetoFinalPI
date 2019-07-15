@@ -16,7 +16,7 @@ class RegistrarUsuarioForm(forms.Form):
             valid = False
 
         user_exists = User.objects.filter(username=self.cleaned_data['nome']).exists()
-        
+
         if user_exists:
             self.adiciona_erro('Usuário já existente.')
             valid = False

@@ -26,6 +26,7 @@ urlpatterns = [
     path('', views.decidir_acao,name='decidir'),
     path('pagina-inicial/', views.pagina_inicial,name='pagina-inicial'),
     path('criar-post/', views.nova_postagem, name='criar_post'),
+    path('criar-post/postar',FazerPostView.as_view(), name='postar'),
     path('pagina-inicial/buscar', PesquisarUsuarioView.as_view(),name='buscar'),
     path('listarperfis/', views.listar_perfis, name='listaperfis'),
     path('perfil/<int:perfil_id>', views.exibir_perfil, name='exibir'),

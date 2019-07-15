@@ -5,16 +5,12 @@ from perfis.models import Perfil
 class Post(models.Model):
     conteudo = models.CharField(max_length=300, null=False)
     autor = models.ForeignKey(Perfil,on_delete=models.CASCADE,related_name='meus_posts' )
+    imagem = models.FileField(upload_to="media/post/", null =True, default = None)
+    data = models.DateField(auto_now_add=True, null = True)
     amei = models.IntegerField()
     odiei = models.IntegerField()
     triste = models.IntegerField()
     legal = models.IntegerField()
-
-    def criar_post(self,perfil_logado,texto):
-        post_cria = Post(conteudo = texto, amei = 0, odiei = 0, triste = 0, legal = 0)
-        post_cria.save()
-        post = [post_cria]
-        perfil_logado.meus_posts.set(post)
 
     def reagir(self,perfil_logado, opcao):
         if opcao == 1:
