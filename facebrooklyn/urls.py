@@ -18,16 +18,18 @@ from django.urls import path
 from perfis import views
 from perfis.views import *
 from usuarios.views import *
-from post.views import *
+from post import views
 from django.contrib.auth import views as v
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.decidir_acao,name='decidir'),
     path('pagina-inicial/', views.pagina_inicial,name='pagina-inicial'),
-    path('criar-post/', views.nova_postagem, name='criar_post'),
-    path('criar-post/postar',FazerPostView.as_view(), name='postar'),
+    path('pagina-inicial/meus-posts', views.meus_posts,name='meus-posts'),
     path('pagina-inicial/buscar', PesquisarUsuarioView.as_view(),name='buscar'),
+    path('pagina-inicial/deletar/<int:post_id>', views.excluir_postagem,name='excluir_post'),
+    path('criar-post/', views.nova_postagem, name='criar_post'),
+    path('criar-post/postar',views.FazerPostView.as_view(), name='postar'),
     path('listarperfis/', views.listar_perfis, name='listaperfis'),
     path('perfil/<int:perfil_id>', views.exibir_perfil, name='exibir'),
     path('perfil/<int:perfil_id>/mudar-senha', views.mudar_senha, name='mudar-senha'),

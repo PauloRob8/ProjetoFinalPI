@@ -9,9 +9,9 @@
 		<ul class="list-group">
 			{% for perfil in perfis %}
 				{% if perfil != perfil_logado %}
-					{% if perfil not in amigos %}
-            			<li> <a href="{% url 'exibir' perfil.id%}">{{perfil.nome}} / {{perfil.email}}</a> </li>
-					{% endif %}
+					
+            		<li> <a href="{% url 'exibir' perfil.id%}">{{perfil.nome}} / {{perfil.email}}</a> </li>
+					
 				{% endif %}
 			{% endfor %}
 		{% else %}	
