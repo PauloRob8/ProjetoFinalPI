@@ -56,7 +56,3 @@ class MudarSenhaView(View):
                 form.adiciona_erro("Senha nova e confirmação não batem")
         
         return render(request, self.template_name, {'form' : form,'perfil_logado' : logado, 'perfil_id' : perfil_id})
-
-        
-        
-        

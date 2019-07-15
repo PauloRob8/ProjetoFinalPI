@@ -53,8 +53,7 @@ class Perfil(models.Model):
             perfil_logado.contatos.remove(perfil_selecionado)
             perfil_selecionado.contatos.remove(perfil_logado)
         
-        bloqueado = [perfil_selecionado]
-        perfil_logado.bloqueados.set(bloqueado)
+        perfil_logado.bloqueados.add(perfil_selecionado)
     
     def desbloquear(self,perfil_logado , perfil_desbloqueado):
         desbloquear = perfil_logado.bloqueados.get(id = perfil_desbloqueado.id)

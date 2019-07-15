@@ -15,6 +15,7 @@
 			}
 
 			.topnav {
+				padding: 7px 3px;
 				overflow: hidden;
 				background-color: #000000;
 				}
@@ -56,54 +57,9 @@
 			input[type=text]:focus {
 				outline: 0;
 				width: 30%;
+				color: #ffffff;
 				background-color: #000000;
 			}
-
-			.column {
-				float: left;
-				padding: 10px;
-			}
-
-			.column.side {
-				height: 100%;
-				width: 25%;
-			}
-
-			.column.middle {
-				height: 100vh;
-				width: 50%;
-			}
-
-			.row:after {
-				content: "";
-				display: table;
-				clear: both;
-			}
-
-			.columnF {
-				float: left;
-				padding: 10px;
-				height: 100%;
-			}
-
-			.columnF.side {
-				width: 25%;
-			}
-
-			.columnF.middle {
-				width: 50%;
-			}
-
-			.columnC {
-				float: top;
-				padding: 10px;
-				height: 100%;
-			}
-
-			.columnC.side {
-				width: 100%;
-			}
-
 		</style>
 
 			
@@ -111,14 +67,18 @@
 	<body>
 		<div class="content">
 			<h1 style="color: #ababab">FaceBrooklyn</h1>
+			<h4 style="color: #ababab"> {{perfil_logado.nome}}</h4>
 		</div>
 		<div class="topnav">
-			<a href="{% url 'listaperfis' %}">Listar Perfis</a>
+			{% if perfil_logado.usuario.is_superuser %}
+				<a href="{% url 'listaperfis' %}">Listar Perfis</a>
+			{% endif %}
 			<a href="{% url 'pagina-inicial' %}">Pagina Inicial</a>
 			<a href="{% url 'exibir' perfil_logado.id%}">Meu Perfil</a>
 			<a href = "/logout/">Logout</a></li>
-			<form class="form-signin" style ="color: #fcfcfc;" action="" method="post">
-				<input id="id_nome" name="nome"type="text" placeholder="Nome Perfil" required >
+			<form class="form-signin" style ="color: #fcfcfc;" action="{% url 'buscar' %}" method="post">
+				{% csrf_token %}
+				<input id="id_nome" name="nome_buscar"type="text" placeholder="Buscar Perfil" required >
 			</form>	
 		</div>
 		{% block body%}

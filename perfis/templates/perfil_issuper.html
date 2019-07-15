@@ -14,19 +14,21 @@
 		{% if is_me %}
 			<a href="{% url 'mudar-senha' perfil.id %}"><button>Mudar Senha</button></a>
 		{% else %}
-			{% if not is_block %}
-				<a href="{% url 'bloquear' perfil.id %}"><button>Bloquar</button></a>
-				{% if is_amigos %}
-					<a href="{% url 'desfazer' perfil.id %}"><button>Desfazer Amizade</button></a>
-				{% else %}
-					{% if is_convidado %}
-						<a href="#"><button>Esperando Confirmação</button></a>
+			{% if not you_is_block %}
+				{% if not block_me %}
+					<a href="{% url 'bloquear' perfil.id %}"><button>Bloquar</button></a>
+					{% if is_amigos %}
+						<a href="{% url 'desfazer' perfil.id %}"><button>Desfazer Amizade</button></a>
 					{% else %}
-						<a href="{% url 'convidar' perfil.id %}"><button>Enviar Pedido de Amizade</button></a>
+						{% if is_convidado %}
+							<a href="#"><button>Esperando Confirmação</button></a>
+						{% else %}
+							<a href="{% url 'convidar' perfil.id %}"><button>Enviar Pedido de Amizade</button></a>
+						{% endif %}
 					{% endif %}
+				{% else %}
+					<a href="{% url 'desbloquear' perfil.id %}"><button>Desbloquear</button></a>
 				{% endif %}
-			{% else %}
-				<a href="{% url 'desbloquear' perfil.id %}"><button>Desbloquear</button></a>
 			{% endif %}
 		{% endif %}
 </div>		
