@@ -1,11 +1,35 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from perfis.models import Perfil, Convite
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.base import View
 from django.contrib.auth.models import User
+from perfis.forms import *
 
-# Create your views here.
+
+class PesquisarUsuarioView(View):
+	template_name = 'pagina_inicial.html'
+	
+	def get(self,request):
+		return redirect('pagina-inicial')
+	
+	def post(self, request):
+		form = PesquisarUsuarioForm(request.POST)
+		if form.is_valid():
+			logado = get_perfil_logado(request)
+			dados_form = form.cleaned_data
+			nome = '' + dados_form['nome_buscar']
+			perfis_gerais = Perfil.objects.all()
+			amigos = logado.amigos.all()
+			perfis = []
+
+			for teste in perfis_gerais:
+				if nome in teste.nome:
+					perfis.append(teste)
+			
+			quantidade = len(perfis)
+		
+		return render(request, 'lista_de_perfis.html', {'perfis' : perfis,'amigos' : amigos,
+		'perfil_logado' : get_perfil_logado(request), 'quantidade' : quantidade})
 
 
 def decidir_acao(request):
@@ -37,21 +61,18 @@ def exibir_perfil(request, perfil_id):
 	user = perfil_logado.usuario
 	is_super = user.is_superuser
 
-	bloqueado = False
-	if bloqueado1 or bloqueado2:
-		bloqueado = True
 
 	if perfil.id != perfil_logado.id:
 		if is_super:
 			return render(request, 'perfil_issuper.html',
 					{'perfil' : perfil, 
 					'perfil_logado' : get_perfil_logado(request),
-					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False, 'is_block' : bloqueado})
+					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False, 'you_is_block' : bloqueado1, 'block_me' : bloqueado2})
 		else:
 			return render(request, 'perfil_notsuper.html',
 					{'perfil' : perfil, 
 					'perfil_logado' : get_perfil_logado(request),
-					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False, 'is_block' : bloqueado})
+					'is_amigos' : is_amigos, 'is_convidado' : exist, 'is_me' : False, 'you_is_block' : bloqueado1, 'block_me' : bloqueado2})
 	else:
 		return render(request, 'perfil_notsuper.html',
 				{'perfil' : perfil, 
@@ -123,12 +144,7 @@ def mudar_senha(request, perfil_id):
 	perfil = get_perfil_logado(request)
 	return render(request, 'mudar-senha.html', {'perfil_logado' : perfil, 'perfil_id' : perfil_id})
 
-
 @login_required
-class PesquisarUsuarioView(View):
-    
-    def get(self, request, perfil_id):
-        return redirect('pagina-inicial')
-
-    def post(self, request, perfil_id):
-        return redirect('pagina-inicial')
+def nova_postagem(request):
+	perfil = get_perfil_logado(request)
+	return render(request, 'formulario_post.html',{'perfil_logado' : perfil})
