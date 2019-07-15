@@ -100,15 +100,13 @@
         <div class="columnC side">
             <div>
                 <h6>Convites Enviados</h6>
-                
-                        <ul class="list-group">
-                            {% for convite in convites_espera %}
-                                <li class = "list-inline-item">
-                                    <a href = "{% url 'exibir' convite.convidado.id %}">{{convite.convidado.nome}}</a>
-                                </li> 
-                            {% endfor %}
-                        </ul>
-                    
+                    <ul class="list-group">
+                         {% for convite in convites_espera %}
+                            <li class = "list-inline-item">
+                                <a href = "{% url 'exibir' convite.convidado.id %}">{{convite.convidado.nome}}</a>
+                            </li> 
+                        {% endfor %}
+                    </ul>
             </div>
         </div>
     
@@ -117,7 +115,20 @@
     <div class="column middle" style="background-color:#bbb;">
         <div>
             <a href="{%url 'criar_post' %}" class="button">Nova Postagem</a>
-       </div>
+        </div>
+        <div>
+            {% if qauntidade != 0 %}
+                {% for post in postagens %}
+                    <ul class="list-group">
+                        <li>{{post.autor.nome}} </li>
+                        <li>{{post.conteudo}}</li>
+                        <li>amei :{{post.amei}} / odiei : {{post.odiei}} / triste : {{post.triste}} / legal : {{post.legal}}</li>
+                    </ul>
+                {% endfor %}
+            {% else %}
+                <p>Sem postagem</p><br>
+            {% endif %}
+        </div>
     </div>
     
     <div class="column side" style="background-color:#aaa;">
@@ -132,24 +143,18 @@
                         <ul class="list-group">
                             <div>
                                 {% for convite in perfil_logado.convites_recebidos.all %}
-                                        
-                                                <div class="row">
-                                                    <div class="columnF middle" style="background-color:#aaa;">
-                                                        <a href = "{% url 'exibir' convite.solicitante.id %}">
-                                                            {{convite.solicitante.nome}}
-                                                        </a>
-                                                    </div>
-
-                                                    <div class="columnF side" style="background-color:#aaa;">
-                                                        <a href = "{% url 'aceitar' convite.id %}">aceitar</a>
-                                                    </div>
-                                                    
-                                                    <div class="columnF side" style="background-color:#aaa;">
-                                                        <a href = "{% url 'recusar' convite.id %}">recusar</a>
-                                                    </div>
-
-                                                </div>
-                                            
+                                    <div class="row">
+                                        <div class="columnF middle" style="background-color:#aaa;">
+                                            <a href = "{% url 'exibir' convite.solicitante.id %}">
+                                            {{convite.solicitante.nome}}</a>
+                                        </div>
+                                        <div class="columnF side" style="background-color:#aaa;">
+                                            <a href = "{% url 'aceitar' convite.id %}">aceitar</a>
+                                        </div>
+                                        <div class="columnF side" style="background-color:#aaa;">
+                                            <a href = "{% url 'recusar' convite.id %}">recusar</a>
+                                        </div>
+                                    </div>        
                                 {% endfor %}
                             </div>
                         </ul>

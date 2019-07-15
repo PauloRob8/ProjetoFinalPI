@@ -7,6 +7,7 @@ class Perfil(models.Model):
     nome = models.CharField(max_length=255, null=False)
     telefone = models.CharField(max_length=20, null= False)
     nome_empresa = models.CharField(max_length=255, null=False)
+    foto_perfil = models.FileField(upload_to="media/perfis/", null = True, default = None)
     contatos = models.ManyToManyField('Perfil',related_name="amigos")
     bloqueados = models.ManyToManyField('Perfil')
     usuario = models.OneToOneField(User, related_name="perfil",on_delete = models.CASCADE)

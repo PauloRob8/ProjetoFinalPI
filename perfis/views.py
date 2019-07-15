@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from perfis.models import Perfil, Convite
+from post.models import *
 from django.contrib.auth.decorators import login_required
 from django.views.generic.base import View
 from django.contrib.auth.models import User
@@ -46,7 +47,18 @@ def decidir_acao(request):
 def pagina_inicial(request):
 	logado = get_perfil_logado(request)
 	convites = Convite.objects.filter(solicitante = logado.id)
-	return render(request, 'pagina_inicial.html',{'perfil_logado' : logado, 'convites_espera' : convites})
+	amigos = logado.contatos.all()
+	post_mostrar = []
+	postagens = Post.objects.all().order_by('data')
+
+	for post in postagens:
+		if post.autor in amigos or post.autor == logado:
+			post_mostrar.append(post)
+	
+	quantidade = len(post_mostrar)
+
+	return render(request, 'pagina_inicial.html',{'perfil_logado' : logado, 'convites_espera' : convites, 
+	'postagens' : post_mostrar, 'quantidade' : quantidade})
 
 @login_required
 def exibir_perfil(request, perfil_id):
