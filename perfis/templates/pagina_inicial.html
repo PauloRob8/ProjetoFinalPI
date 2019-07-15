@@ -155,10 +155,10 @@
 
                              {% if  post.autor.id == perfil_logado.id or is_super %}
                                 <div class="columnPO side" style="background-color:#aaa;">
-                                    <a href="#" class="button">Editar</a>
+                                    <a href="" class="button">Editar</a>
                                 </div>
                                 <div class="columnPO side" style="background-color:#aaa;">
-                                    <a href="#" class="button">Excluir</a>
+                                    <a href="{%url 'excluir_post' post.id%}" class="button">Excluir</a>
                                 </div>
                             {% endif %}
                         </ul>

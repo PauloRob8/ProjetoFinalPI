@@ -72,6 +72,7 @@
 		<div class="topnav">
 			{% if perfil_logado.usuario.is_superuser %}
 				<a href="{% url 'listaperfis' %}">Listar Perfis</a>
+				<a href="{% url 'meus-posts' %}">Meus Posts</a>
 			{% endif %}
 			<a href="{% url 'pagina-inicial' %}">Pagina Inicial</a>
 			<a href="{% url 'exibir' perfil_logado.id%}">Meu Perfil</a>
