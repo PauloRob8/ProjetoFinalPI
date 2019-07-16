@@ -12,16 +12,25 @@ class Post(models.Model):
     triste = models.IntegerField()
     legal = models.IntegerField()
 
-    def reagir(self,perfil_logado, opcao):
+    def reagir(self, opcao):
         if opcao == 1:
             self.amei += 1
-            self.save
+            self.save()
         elif opcao == 2:
             self.odiei += 1
-            self.save
+            self.save()
         elif opcao == 3:
             self.triste += 1
-            self.save
+            self.save()
         elif opcao == 4:
             self.legal += 1
-            self.save
+            self.save()
+
+class Comentario(models.Model):
+    conteudo = models.CharField(max_length=50, null=False)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    autor = models.ForeignKey(Perfil,on_delete=models.CASCADE)
+
+class Marcacoes(models.Model):
+    post = models.IntegerField()
+    marcado = models.IntegerField()

@@ -80,6 +80,7 @@
 	}
 
 	.columnPO.middle {
+        text-align: center;
 		width: 100%;
 	}
     
@@ -135,35 +136,77 @@
         
         <div>
             {% if qauntidade != 0 %}
-                {% for post in postagens %}
-                    <div class="columnPO middle">
-                        <ul class="list-group">
-                            <li>Autor : {{post.autor.nome}} </li>
-                            <li>Texto : {{post.conteudo}}</li>
-                            <div class="columnPO side" style="background-color:#aaa;">
-                                <a href = "#">amei :{{post.amei}}</a>
-                            </div>
-                            <div class="columnPO side" style="background-color:#aaa;">
-                                <a href = "#">odiei : {{post.odiei}}</a>
-                            </div>
-                            <div class="columnPO side" style="background-color:#aaa;">
-                                <a href = "#"> triste : {{post.triste}}</a>
-                            </div>
-                            <div class="columnPO side" style="background-color:#aaa;">
-                                <a href = "#"> triste : legal : {{post.legal}}</a>
-                            </div>
+                <div class="columnPO middle">
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% for post in postagens %}
+                                <div class="columnPO middle">
+                                 {% for marca in marcacoes %}
+                                    {% if post.id == marca.post %}
+                                         {% if perfil_logado.id == marca.marcado %}
+                                            <h3>Você foi marcado neste Post</h3>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                    
+                                    <ul class="list-group"> 
+                                        <div>
+                                            <a href="{%url 'post' post.id%}" class="button">
+                                            <h3>{{post.autor.nome}}</h3>
+                                            <h5>{{post.conteudo}}</h5>
+                                            </a>
+                                        </div>
+                                        
+                                        <div class="columnPO side" style="background-color:#aaa;">
+                                                <a href = "{%url 'reagir' post.id  1%}">amei :{{post.amei}}</a>
+                                            </div>
+                                        <div class="columnPO side" style="background-color:#aaa;">
+                                            <a href = "{%url 'reagir' post.id  2%}">odiei : {{post.odiei}}</a>
+                                        </div>
+                                        <div class="columnPO side" style="background-color:#aaa;">
+                                            <a href = "{%url 'reagir' post.id  3%}"> triste : {{post.triste}}</a>
+                                        </div>
+                                        <div class="columnPO side" style="background-color:#aaa;">
+                                            <a href = "{%url 'reagir' post.id  4%}"> legal : {{post.legal}}</a>
+                                        </div>
+                                        
+                                        {% if  post.autor.id == perfil_logado.id%}
+                                            <div class="columnPO side" style="background-color:#aaa;">
+                                                <a href="{%url 'editar' post.id%}" class="button">Editar</a>
+                                            </div>
+                                        {% endif %}
+                                        
+                                        {% if is_super %}
+                                            {% if not post.autor.usuario.is_superuser%}
+                                                <div class="columnPO side" style="background-color:#aaa;">
+                                                    <a href="{%url 'excluir_post' post.id%}" class="button" >Excluir</a>
+                                                </div>
+                                            {% endif %}
+                                            {% if  post.autor.id == perfil_logado.id%}
+                                                <div class="columnPO side" style="background-color:#aaa;">
+                                                    <a href="{%url 'excluir_post' post.id%}" class="button" >Excluir</a>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                            <div class="columnPO side" style="background-color:#aaa;">
+                                                <a href="{%url 'compartilha' post.id%}" class="button">Compartilha</a>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                {% endfor %}
+                                </div>
+                    
 
-                             {% if  post.autor.id == perfil_logado.id or is_super %}
-                                <div class="columnPO side" style="background-color:#aaa;">
-                                    <a href="" class="button">Editar</a>
-                                </div>
-                                <div class="columnPO side" style="background-color:#aaa;">
-                                    <a href="{%url 'excluir_post' post.id%}" class="button">Excluir</a>
-                                </div>
-                            {% endif %}
-                        </ul>
-                    </div>
-                {% endfor %}
+                                {% if postagens.has_previous %}
+                                    <a href="?page={{ postagens.previous_page_number }}">Anterior</a>
+                                {% endif %}
+
+                                {% if postagens.has_next %}
+                                    <a href="?page={{ postagens.next_page_number }}">Próxima</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                        
             {% else %}
                 <p>Sem postagem</p><br>
             {% endif %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+	input {
+		background-color: #292929;
+		color: #ffffff;
+		font-size: 20px;
+		box-sizing: border-box;
+		border: none;
+		border-bottom: 2px solid black;
+		width: 100%;
+		padding: 10px 10px;
+		margin: 8px 0;
+		-webkit-transition: width 0.4s ease-in-out;
+  		transition: width 0.4s ease-in-out;
+	}
+
+    .button {
+        display: inline-block;
+        padding: 15px 25px;
+        font-size: 15px;
+        width: 100%;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #000000;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 9px #999;
+    }
+        .button:hover {background-color: #242424}
+        .button:active {
+        background-color: #383838;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
+</style>
+    <h2>Post Original:</h2>
+    <h4>{{post.conteudo}}</h4>
+    
+    <form class="form-signin" action="{% url 'concluir-editar' post.id%}" method="post">
+        {% csrf_token %}
+        
+        <h2 class="form-signin-heading">Novo texto</h2>
+        
+		<input id="id_post" name="post"
+        class="form-control" placeholder="Digite o tovo texto" required autofocus maxlength="60">
+
+        <button class="button"
+        type="submit" value="Login">Postar</button>
+
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <button type="button" class="close"
+                    data-dismiss="alert" aria-hidden="true">×</button>
+                {{form.non_field_errors}}
+            </div>
+        {% endif %}
+    </form>
+{% endblock %}

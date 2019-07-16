@@ -303,7 +303,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.428571429;
-  color: #ffffff;
+  color: #333333;
   background-color: #ffffff;
 }
 
@@ -324,13 +324,13 @@ textarea {
 }
 
 a {
-  color: #ffffff;
+  color: #428bca;
   text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  color: #ffffff;
+  color: #2a6496;
   text-decoration: underline;
 }
 
@@ -2080,8 +2080,8 @@ fieldset[disabled] .btn-default.active {
 
 .btn-primary {
   color: #ffffff;
-  background-color: #000000;
-  border-color: #ffffff;
+  background-color: #428bca;
+  border-color: #357ebd;
 }
 
 .btn-primary:hover,
@@ -2090,7 +2090,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
   color: #ffffff;
-  background-color: #A4A4A4;
+  background-color: #3276b1;
   border-color: #285e8e;
 }
 
