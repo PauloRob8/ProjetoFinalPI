@@ -11,6 +11,7 @@ class Perfil(models.Model):
     contatos = models.ManyToManyField('Perfil',related_name="amigos")
     bloqueados = models.ManyToManyField('Perfil')
     usuario = models.OneToOneField(User, related_name="perfil",on_delete = models.CASCADE)
+    is_active = models.BooleanField(default = True)
 
     @property
     def email(self):

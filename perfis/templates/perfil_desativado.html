@@ -1,0 +1,6 @@
+{% extends "base_usuario.html" %}
+{% block body %}
+<h4>Perfil desativado</h4>
+<a href = "/logout/">Logout</a></li>
+<a href="{% url 'ativar' perfil_id %}">ativar</a><br>
+{% endblock %}

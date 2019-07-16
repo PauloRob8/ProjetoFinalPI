@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+    input {
+		background-color: #292929;
+		color: #ffffff;
+		font-size: 20px;
+		box-sizing: border-box;
+		border: none;
+		border-bottom: 2px solid black;
+		width: 100%;
+		padding: 10px 10px;
+		margin: 8px 0;
+		-webkit-transition: width 0.4s ease-in-out;
+  		transition: width 0.4s ease-in-out;
+	}
+
+    .button {
+        display: inline-block;
+        padding: 15px 25px;
+        font-size: 15px;
+        width: 100%;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #000000;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 9px #999;
+    }
+        .button:hover {background-color: #242424}
+        .button:active {
+        background-color: #383838;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
+    .column {
+		float: left;
+		padding: 10px;
+	}
+
+	.column.side {
+		height: 100%;
+		width: 25%;
+	}
+
+	.column.middle {
+		height: 100%;
+		width: 50%;
+	}
+
+	.row:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+
+
+    .columnPO {
+		float: left;
+		padding: 10px;
+		height: 100%;
+	}
+
+	.columnPO.side {
+		width: 25%;
+	}
+
+	.columnPO.middle {
+        text-align: center;
+		width: 100%;
+	}
+    
+
+</style>
+
+<div class="row">
+    <div class="column side" style="background-color:#aaa;">
+    </div>
+
+    <div class="column middle" style="background-color:#bbb;">
+        <div class="columnPO middle">
+            <div class="columnPO middle">
+                    {% if  post.autor.id == perfil_logado.id or is_super %}
+                        <div class="columnPO side" style="background-color:#bbb;;">
+                            <a href="" class="button">Editar</a>
+                        </div>
+                        <div class="columnPO side" style="background-color:#bbb;;">
+                            <a href="{%url 'excluir_post' post.id%}" class="button" >Excluir</a>
+                        </div>
+                    {% endif %}
+                        <div class="columnPO side" style="background-color:#bbb;;">
+                            <a href="" class="button" ">Compartilha</a>
+                        </div>
+                <ul class="list-group">
+                    <div>
+                        <a href="" class="button">
+                            <h3>{{post.autor.nome}}</h1>
+                            <h5>{{post.conteudo}}</h5>     
+                        </a>
+                    </div>
+                    <div class="columnPO side" style="background-color:#bbb;;">
+                            <a href = "{%url 'reagir' post.id  1%}">amei :{{post.amei}}</a>
+                        </div>
+                        <div class="columnPO side" style="background-color:#bbb;;">
+                            <a href = "{%url 'reagir' post.id  2%}">odiei : {{post.odiei}}</a>
+                        </div>
+                        <div class="columnPO side" style="background-color:#bbb;;">
+                            <a href = "{%url 'reagir' post.id  3%}"> triste : {{post.triste}}</a>
+                        </div>
+                        <div class="columnPO side" style="background-color:#bbb;;">
+                            <a href = "{%url 'reagir' post.id  4%}"> legal : {{post.legal}}</a>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+                <form class="form-signin" action="{% url 'comentar' post.id%}" method="post">
+                    {% csrf_token %}
+                    <h2 class="form-signin-heading">Quer comenta, vai em frente</h2>
+                    
+                    <input id="id_post" name="post"
+                    class="form-control" placeholder="Só vai" required autofocus maxlength="60">
+
+                    <button class="button"
+                    type="submit" value="Login">Comentar</button>
+
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close"
+                                data-dismiss="alert" aria-hidden="true">×</button>
+                            {{form.non_field_errors}}
+                        </div>
+                    {% endif %}
+                </form>
+
+                <form class="form-signin" action="{% url 'marcar' post.id%}" method="post">
+                    {% csrf_token %}
+                    <h3 class="form-signin-heading">Marque Alguem nessa postagem</h3>
+                    
+                    <input id="id_post" name="post"
+                    class="form-control" placeholder="Ele talvez nem veja" required autofocus maxlength="60">
+
+                    <button class="button"
+                    type="submit" value="Login">Marcar</button>
+
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close"
+                                data-dismiss="alert" aria-hidden="true">×</button>
+                            {{form.non_field_errors}}
+                        </div>
+                    {% endif %}
+                </form>
+
+
+                <h2 class="form-signin-heading">Comentarios</h2>
+                {% for comentario in comentarios %}
+                    <a href="" class="button">
+                        <h4>{{comentario.autor.nome}}</h1>
+                        <h6>{{comentario.conteudo}}</h5>     
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="column side" style="background-color:#aaa;">
+    </div>
+</div>
+{% endblock %}

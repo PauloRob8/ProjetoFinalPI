@@ -60,11 +60,17 @@
 				color: #ffffff;
 				background-color: #000000;
 			}
-		</style>
-
-			
+		</style>	
 	</head>
+	
 	<body>
+		
+		<script>
+			function myFunction() {
+  				confirm("Possui certeza dessa ação?");
+			}
+		</script>
+		
 		<div class="content">
 			<h1 style="color: #ababab">FaceBrooklyn</h1>
 			<h4 style="color: #ababab"> {{perfil_logado.nome}}</h4>
@@ -76,7 +82,7 @@
 			{% endif %}
 			<a href="{% url 'pagina-inicial' %}">Pagina Inicial</a>
 			<a href="{% url 'exibir' perfil_logado.id%}">Meu Perfil</a>
-			<a href = "/logout/">Logout</a></li>
+			<a href = "/logout/">Logout</a>
 			<form class="form-signin" style ="color: #fcfcfc;" action="{% url 'buscar' %}" method="post">
 				{% csrf_token %}
 				<input id="id_nome" name="nome_buscar"type="text" placeholder="Buscar Perfil" required >
